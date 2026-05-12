@@ -1,0 +1,106 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ── Design tokens ───────────────────────────────────────────── */
+:root {
+  /* Foundation — warm off-white, near-black ink, single muted sage accent. */
+  --bg:      250 249 246;   /* paper      */
+  --surface: 244 243 239;   /* card       */
+  --border:  223 220 213;   /* hairline   */
+  --ink:      17  17  17;   /* near-black */
+  --muted:    92  92  92;   /* body grey  */
+  --subtle:  148 148 148;   /* secondary  */
+  --accent:   78 107  87;   /* muted sage */
+
+  --font-sans:  "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-serif: "Instrument Serif", "Times New Roman", ui-serif, serif;
+  --font-mono:  "JetBrains Mono", ui-monospace, "SFMono-Regular", monospace;
+
+  --grid-line: 223 220 213 / 0.45;
+}
+
+.dark {
+  --bg:       12  12  12;
+  --surface:  20  20  20;
+  --border:   38  38  38;
+  --ink:     236 236 234;
+  --muted:   162 162 162;
+  --subtle:  108 108 108;
+  --accent:  138 168 146;
+  --grid-line: 38 38 38 / 0.6;
+}
+
+/* ── Base ────────────────────────────────────────────────────── */
+html {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+body {
+  background: rgb(var(--bg));
+  color: rgb(var(--ink));
+  font-family: var(--font-sans);
+  font-feature-settings: "ss01", "cv11";
+}
+
+::selection {
+  background: rgb(var(--accent) / 0.22);
+  color: rgb(var(--ink));
+}
+
+/* Focus — visible but quiet. */
+:focus-visible {
+  outline: 2px solid rgb(var(--accent));
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+/* Honor reduced-motion users globally. */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* ── Editorial helpers ───────────────────────────────────────── */
+.eyebrow {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: rgb(var(--subtle));
+}
+
+.hairline {
+  border-color: rgb(var(--border));
+}
+
+.serif-display {
+  font-family: var(--font-serif);
+  font-weight: 400;
+  font-style: italic;
+}
+
+/* Subtle architectural grid (used in hero). */
+.grid-lines {
+  background-image:
+    linear-gradient(to right,  rgb(var(--grid-line)) 1px, transparent 1px),
+    linear-gradient(to bottom, rgb(var(--grid-line)) 1px, transparent 1px);
+  background-size: 80px 80px;
+  mask-image: radial-gradient(ellipse at center, black 30%, transparent 75%);
+}
+
+.noise {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.025;
+  mix-blend-mode: multiply;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+}
+
+.dark .noise { mix-blend-mode: screen; opacity: 0.04; }
