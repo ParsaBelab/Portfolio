@@ -2,22 +2,21 @@
 
 import { motion } from "framer-motion";
 
-import type { Site } from "@/lib/types";
+import { useSite } from "@/hooks/useApi";
 
 const ease = [0.16, 1, 0.3, 1] as const;
 
-export function Hero({ site }: { site: Site }) {
+export function Hero() {
+  const { data: site } = useSite();
   const firstName = site.full_name.split(" ")[0] ?? site.full_name;
   const lastName = site.full_name.split(" ").slice(1).join(" ");
 
   return (
     <section className="relative overflow-hidden">
-      {/* Subtle architectural backdrop. */}
       <div aria-hidden className="pointer-events-none absolute inset-0 grid-lines" />
       <div aria-hidden className="noise" />
 
       <div className="container relative pt-40 pb-24 md:pt-48 md:pb-32">
-        {/* Top meta row */}
         <motion.div
           initial={{ opacity: 0, y: 8 }}
           animate={{ opacity: 1, y: 0 }}
@@ -37,7 +36,6 @@ export function Hero({ site }: { site: Site }) {
           </span>
         </motion.div>
 
-        {/* Display name */}
         <div className="mt-20 md:mt-28">
           <motion.h1
             initial="hidden"
@@ -70,7 +68,6 @@ export function Hero({ site }: { site: Site }) {
           </motion.h1>
         </div>
 
-        {/* Lower row */}
         <div className="mt-16 md:mt-24 grid gap-12 md:grid-cols-12 items-end">
           <motion.div
             initial={{ opacity: 0, y: 16 }}
@@ -97,7 +94,6 @@ export function Hero({ site }: { site: Site }) {
           </motion.dl>
         </div>
 
-        {/* Scroll cue */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}

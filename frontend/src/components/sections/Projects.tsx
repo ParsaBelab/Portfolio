@@ -4,6 +4,7 @@ import { useMemo, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 
 import { Section } from "@/components/ui/Section";
+import { useProjects } from "@/hooks/useApi";
 import type { Project } from "@/lib/types";
 import { cn } from "@/lib/utils";
 
@@ -11,7 +12,9 @@ const ease = [0.16, 1, 0.3, 1] as const;
 
 interface Filter { key: string; label: string; }
 
-export function Projects({ projects }: { projects: Project[] }) {
+export function Projects() {
+  const { data: projects, isLoading } = useProjects();
+
   const filters: Filter[] = useMemo(() => {
     const map = new Map<string, string>();
     projects.forEach((p) => map.set(p.category, p.category_label));
@@ -29,8 +32,7 @@ export function Projects({ projects }: { projects: Project[] }) {
       title={<>Things I've built, kept alive, and learned from.</>}
       intro="A short, working selection. Each one taught me something I now use on the next."
     >
-      {/* Filter bar */}
-      <div className="mb-12 flex flex-wrap gap-2 border-b border-border pb-6">
+      <div className="mb-12 flex flex-wrap items-center gap-2 border-b border-border pb-6">
         {filters.map((f) => {
           const isActive = active === f.key;
           return (
@@ -54,9 +56,14 @@ export function Projects({ projects }: { projects: Project[] }) {
             </button>
           );
         })}
+        {isLoading && (
+          <span className="ml-auto font-mono text-[10px] uppercase tracking-[0.18em] text-subtle">
+            <span className="inline-block h-1.5 w-1.5 rounded-full bg-accent animate-pulse mr-2 align-middle" />
+            Refreshing
+          </span>
+        )}
       </div>
 
-      {/* Grid */}
       <motion.ul layout className="grid gap-px bg-border md:grid-cols-2 border border-border">
         <AnimatePresence mode="popLayout">
           {visible.map((p, i) => (
@@ -74,6 +81,12 @@ export function Projects({ projects }: { projects: Project[] }) {
           ))}
         </AnimatePresence>
       </motion.ul>
+
+      {visible.length === 0 && !isLoading && (
+        <p className="py-16 text-center text-muted font-mono text-xs uppercase tracking-[0.2em]">
+          No projects in this category yet.
+        </p>
+      )}
     </Section>
   );
 }

@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 
 import { ThemeToggle } from "@/components/theme/ThemeToggle";
-import type { Site } from "@/lib/types";
+import { useSite } from "@/hooks/useApi";
 import { cn } from "@/lib/utils";
 
 const SECTIONS = [
@@ -15,7 +15,8 @@ const SECTIONS = [
   { id: "contact",    label: "Contact" },
 ];
 
-export function Nav({ site }: { site: Site }) {
+export function Nav() {
+  const { data: site } = useSite();
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
 
@@ -82,7 +83,6 @@ export function Nav({ site }: { site: Site }) {
         </div>
       </div>
 
-      {/* Mobile sheet */}
       <div
         className={cn(
           "md:hidden overflow-hidden border-t border-border bg-bg transition-[max-height] duration-300",

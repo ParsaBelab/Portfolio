@@ -1,9 +1,11 @@
 import Link from "next/link";
 
-import type { Site } from "@/lib/types";
+import { api } from "@/lib/api";
 
-export function Footer({ site }: { site: Site }) {
+export async function Footer() {
+  const site = await api.site();
   const year = new Date().getFullYear();
+
   return (
     <footer className="border-t border-border mt-32">
       <div className="container py-16 grid gap-10 md:grid-cols-3">

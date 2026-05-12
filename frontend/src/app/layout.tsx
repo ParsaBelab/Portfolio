@@ -4,7 +4,6 @@ import { Inter, Instrument_Serif, JetBrains_Mono } from "next/font/google";
 import { ThemeProvider } from "@/components/theme/ThemeProvider";
 import { Nav } from "@/components/layout/Nav";
 import { Footer } from "@/components/layout/Footer";
-import { api } from "@/lib/api";
 
 import "@/styles/globals.css";
 
@@ -45,9 +44,7 @@ export const viewport: Viewport = {
   ],
 };
 
-export default async function RootLayout({ children }: { children: React.ReactNode }) {
-  const site = await api.site();
-
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html
       lang="en"
@@ -62,9 +59,9 @@ export default async function RootLayout({ children }: { children: React.ReactNo
           >
             Skip to content
           </a>
-          <Nav site={site} />
+          <Nav />
           <main id="main">{children}</main>
-          <Footer site={site} />
+          <Footer />
         </ThemeProvider>
       </body>
     </html>

@@ -12,21 +12,22 @@ import { api } from "@/lib/api";
 export const revalidate = 60;
 
 export default async function Home() {
-  const [site, projects, experience, skills] = await Promise.all([
+  // Server-side fetch for server components only.
+  // Client components (Hero, Projects) fetch via hooks in `src/hooks/useApi.ts`.
+  const [site, experience, skills] = await Promise.all([
     api.site(),
-    api.projects(),
     api.experience(),
     api.skills(),
   ]);
 
   return (
     <>
-      <Hero site={site} />
+      <Hero />
       <About site={site} />
       <Stack categories={skills} />
       <Skills />
       <Experience entries={experience} />
-      <Projects projects={projects} />
+      <Projects />
       <Github />
       <Now items={site.current_focus} />
       <Contact site={site} />
